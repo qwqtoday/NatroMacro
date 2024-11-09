@@ -81,6 +81,10 @@ DebugLogEnabled := A_Args[34]
 
 MonsterRespawnTime := A_Args[35]
 
+PoolEnabled := A_Args[36]
+PoolUrl := A_Args[37]
+PoolToken := A_Args[38]
+
 pToken := Gdip_Startup()
 OnExit(ExitFunc)
 OnMessage(0x004A, nm_sendPostData, 255)
