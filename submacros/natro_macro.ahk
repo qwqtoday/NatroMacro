@@ -13761,6 +13761,9 @@ nm_Bugrun(){
 					nm_setStatus("Attacking", "Commando Chick")
 					if (UseBigDaddyCommandoHelp) {
 						nm_setStatus("Attacking", "Calling big daddy for help to attack commando chick")
+						if WinExist("natro_macro ahk_class AutoHotkey") {
+							PostMessage 0x9002, 1, 1
+						}
 					}
 					DllCall("GetSystemTimeAsFileTime", "int64p", &ChickStartTime:=0)
 					KillCheck := ChickStartTime
