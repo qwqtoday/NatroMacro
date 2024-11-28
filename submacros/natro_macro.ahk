@@ -107,6 +107,7 @@ OnMessage(0x5555, nm_backgroundEvent, 255)
 OnMessage(0x5556, nm_sendHeartbeat)
 OnMessage(0x5557, nm_ForceReconnect)
 OnMessage(0x5558, nm_AmuletPrompt)
+OnMessage(0x9001, nm_PleaseCommandoHelp)
 
 ; set version identifier
 VersionID := "1.0.0.2"
@@ -392,7 +393,8 @@ nm_importConfig()
 		, "NightAnnouncementWebhook", ""
 		, "DebugLogEnabled", 1
 		, "SessionTotalHoney", 0
-		, "HoneyAverage", 0)
+		, "HoneyAverage", 0, 
+		, "BigDaddyChanneID", 0)
 
 	config["Gather"] := Map("FieldName1", "Sunflower"
 		, "FieldName2", "None"
@@ -593,7 +595,8 @@ nm_importConfig()
 		, "MemoryMatchInterruptCheck", 0
 		, "StickerPrinterCheck", 0
 		, "LastStickerPrinter", 1
-		, "StickerPrinterEgg", "Basic")
+		, "StickerPrinterEgg", "Basic",
+		, "UseBigDaddyCommandoHelp", 0)
 
 	config["Shrine"] := Map("ShrineCheck", 0
 		, "LastShrine", 1
@@ -2007,7 +2010,7 @@ Run
 '"' WebhookEasterEgg '" "' ssCheck '" "' ssDebugging '" "' CriticalSSCheck '" "' AmuletSSCheck '" "' MachineSSCheck '" "' BalloonSSCheck '" "' ViciousSSCheck '" '
 '"' DeathSSCheck '" "' PlanterSSCheck '" "' HoneySSCheck '" "' criticalCheck '" "' discordUID '" "' CriticalErrorPingCheck '" "' DisconnectPingCheck '" "' GameFrozenPingCheck '" '
 '"' PhantomPingCheck '" "' UnexpectedDeathPingCheck '" "' EmergencyBalloonPingCheck '" "' commandPrefix '" "' NightAnnouncementCheck '" "' NightAnnouncementName '" '
-'"' NightAnnouncementPingID '" "' NightAnnouncementWebhook '" "' PrivServer '" "' DebugLogEnabled '" "' MonsterRespawnTime '"'
+'"' NightAnnouncementPingID '" "' NightAnnouncementWebhook '" "' PrivServer '" "' DebugLogEnabled '" "' MonsterRespawnTime '" "' BigDaddyChannelID '"' 
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3213,6 +3216,8 @@ try {
 SetTimer Background, 2000
 if (A_Args.Has(1) && (A_Args[1] = 1))
 	SetTimer start, -1000
+
+CommandoHelp := false
 
 return
 
@@ -11848,7 +11853,7 @@ nm_Bugrun(){
 		, intialHealthCheck
 		, CocoCrabCheck, LastCocoCrab
 		, StumpSnailCheck, LastStumpSnail
-		, CommandoCheck, LastCommando
+		, CommandoCheck, LastCommando, CommandoHelp, UseBigDaddyCommandoHelp
 		, TunnelBearCheck, TunnelBearBabyCheck
 		, KingBeetleCheck, KingBeetleBabyCheck
 		, LastTunnelBear, LastKingBeetle
@@ -13561,7 +13566,7 @@ nm_Bugrun(){
 			return
 
 		;Commando
-		if((CommandoCheck) && (nowUnix()-LastCommando)>floor(1800*(1-(MonsterRespawnTime?MonsterRespawnTime:0)*0.01))){ ;30 minutes
+		if(CommandoHelp || ((CommandoCheck) && (nowUnix()-LastCommando)>floor(1800*(1-(MonsterRespawnTime?MonsterRespawnTime:0)*0.01)))){ ;30 minutes
 			Loop 2 {
 				nm_Reset()
 				;Go to Commando tunnel
@@ -13696,9 +13701,11 @@ nm_Bugrun(){
 				KeyWait "F14", "D T5 L"
 				KeyWait "F14", "T90 L"
 				nm_endWalk()
-
+				
 				if (youDied)
 					continue
+
+				CommandoHelp := false
 
 				while (nm_imgSearch("ChickFled.png",50,"lowright")[1] = 0)
 				{
@@ -13752,7 +13759,9 @@ nm_Bugrun(){
 				Ccdead:=0
 				if(found) {
 					nm_setStatus("Attacking", "Commando Chick")
-
+					if (UseBigDaddyCommandoHelp) {
+						nm_setStatus("Attacking", "Calling big daddy for help to attack commando chick")
+					}
 					DllCall("GetSystemTimeAsFileTime", "int64p", &ChickStartTime:=0)
 					KillCheck := ChickStartTime
 					UpdateTimer := ChickStartTime
@@ -14009,6 +14018,11 @@ nm_Bugrun(){
 		}
 	}
 }
+
+nm_PleaseCommandoHelp(*) {
+	global CommandoHelp := true
+}
+
 nm_Mondo(){
 	global youDied
 	global VBState

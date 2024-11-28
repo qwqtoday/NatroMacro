@@ -81,6 +81,8 @@ DebugLogEnabled := A_Args[34]
 
 MonsterRespawnTime := A_Args[35]
 
+BigDaddyChannelID := A_Args[36]
+
 pToken := Gdip_Startup()
 OnExit(ExitFunc)
 OnMessage(0x004A, nm_sendPostData, 255)
@@ -2316,7 +2318,10 @@ nm_command(command)
 
 		#Include "*i %A_ScriptDir%\..\settings\personal_commands.ahk"
 
-
+		case "plshelpwithcommandochick":
+		if WinExist("natro_macro ahk_class AutoHotkey") {
+			PostMessage 0x9001, 1, 1
+		}
 		default:
 		discord.SendEmbed("``" commandPrefix name "`` is not a valid command!\nUse ``" commandPrefix "help`` for a list of commonly used commands.", 16711731, , , , id)
 	}
@@ -2697,6 +2702,10 @@ nm_sendHeartbeat(*)
 		PostMessage 0x5556, 3
 	}
 	return 0
+}
+
+nm_askBigDaddyForHelp(wParam, lParam, *) {
+	discord.SendMessageAPI("?plshelpwithcommandochick", "application/json", BigDaddyChannelID)
 }
 
 ExitFunc(*)
