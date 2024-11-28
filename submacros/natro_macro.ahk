@@ -393,7 +393,7 @@ nm_importConfig()
 		, "NightAnnouncementWebhook", ""
 		, "DebugLogEnabled", 1
 		, "SessionTotalHoney", 0
-		, "HoneyAverage", 0, 
+		, "HoneyAverage", 0
 		, "BigDaddyChanneID", 0)
 
 	config["Gather"] := Map("FieldName1", "Sunflower"
@@ -595,7 +595,7 @@ nm_importConfig()
 		, "MemoryMatchInterruptCheck", 0
 		, "StickerPrinterCheck", 0
 		, "LastStickerPrinter", 1
-		, "StickerPrinterEgg", "Basic",
+		, "StickerPrinterEgg", "Basic"
 		, "UseBigDaddyCommandoHelp", 0)
 
 	config["Shrine"] := Map("ShrineCheck", 0
