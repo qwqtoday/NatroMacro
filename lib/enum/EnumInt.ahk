@@ -357,5 +357,5 @@
 	, "SilverEggMatchIgnore"
 	, "GoldEggMatchIgnore"
 	, "DiamondEggMatchIgnore"
-	, "CoconutBoosterCheck",
+	, "CoconutBoosterCheck"
 	, "UseBigDaddyCommandoHelp"]
