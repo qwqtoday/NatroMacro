@@ -2316,13 +2316,14 @@ nm_command(command)
 			discord.SendMessageAPI(postdata)
 		}
 
-
-		#Include "*i %A_ScriptDir%\..\settings\personal_commands.ahk"
-
 		case "plshelpwithcommandochick":
 		if WinExist("natro_macro ahk_class AutoHotkey") {
 			PostMessage 0x9001, 1, 1
 		}
+		
+		#Include "*i %A_ScriptDir%\..\settings\personal_commands.ahk"
+
+		
 		default:
 		discord.SendEmbed("``" commandPrefix name "`` is not a valid command!\nUse ``" commandPrefix "help`` for a list of commonly used commands.", 16711731, , , , id)
 	}
