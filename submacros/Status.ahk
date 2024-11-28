@@ -90,6 +90,7 @@ OnMessage(0xC2, nm_setStatus, 255)
 OnMessage(0x5552, nm_setGlobalInt, 255)
 OnMessage(0x5553, nm_setGlobalStr, 255)
 OnMessage(0x5556, nm_sendHeartbeat)
+OnMessage(0x9002, nm_askBigDaddyForHelp)
 
 discord.SendEmbed("Connected to Discord!", 5066239)
 
